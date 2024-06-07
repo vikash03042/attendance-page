@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance and Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .student {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .student:last-child {
+            border-bottom: none;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .buttons button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .buttons .yes {
+            background-color: #4caf50;
+            color: #fff;
+        }
+        .buttons .no {
+            background-color: #f44336;
+            color: #fff;
+        }
+        .feedback {
+            margin-top: 20px;
+        }
+        .feedback input,
+        .feedback textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .feedback button {
+            padding: 10px;
+            background-color: #2196f3;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .profile {
+            margin-top: 20px;
+        }
+        .profile h2 {
+            color: #444;
+        }
+        .profile p {
+            padding: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Student Attendance and Feedback</h1>
+
+    <div id="attendance">
+        <!-- Students will be listed here dynamically -->
+    </div>
+
+    <div class="feedback">
+        <h2>Student Feedback</h2>
+        <input type="text" id="studentName" placeholder="Your Name">
+        <textarea id="studentFeedback" rows="4" placeholder="Your Feedback"></textarea>
+        <button onclick="submitFeedback()">Submit Feedback</button>
+    </div>
+
+    <div class="profile">
+        <h2>Attendance Profile</h2>
+        <button onclick="showProfile()">Show Profile</button>
+        <div id="profileData"></div>
+    </div>
+</div>
+
+<script>
+    const students = ["Alice", "Bob", "Charlie", "Diana"];
+
+    function loadStudents() {
+        const attendanceDiv = document.getElementById('attendance');
+        students.forEach(student => {
+            const studentDiv = document.createElement('div');
+            studentDiv.className = 'student';
+            studentDiv.innerHTML = `
+                <span>${student}</span>
+                <div class="buttons">
+                    <button class="yes" onclick="markAttendance('${student}', true)">Yes</button>
+                    <button class="no" onclick="markAttendance('${student}', false)">No</button>
+                </div>
+            `;
+            attendanceDiv.appendChild(studentDiv);
+        });
+    }
+
+    function markAttendance(student, isPresent) {
+        const date = new Date().toLocaleDateString();
+        let attendanceRecord = JSON.parse(localStorage.getItem('attendanceRecord')) || {};
+        if (!attendanceRecord[student]) {
+            attendanceRecord[student] = [];
+        }
+        attendanceRecord[student].push({ date, isPresent });
+        localStorage.setItem('attendanceRecord', JSON.stringify(attendanceRecord));
+        console.log(`Attendance for ${student} marked as ${isPresent ? 'Present' : 'Absent'} on ${date}`);
+        alert(`Attendance for ${student} marked as ${isPresent ? 'Present' : 'Absent'}`);
+    }
+
+    function submitFeedback() {
+        const name = document.getElementById('studentName').value;
+        const feedback = document.getElementById('studentFeedback').value;
+        if (name && feedback) {
+            console.log(`Feedback from ${name}: ${feedback}`);
+            alert('Thank you for your feedback!');
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentFeedback').value = '';
+        } else {
+            alert('Please fill out both fields before submitting your feedback.');
+        }
+    }
+
+    function showProfile() {
+        const profileDiv = document.getElementById('profileData');
+        const attendanceRecord = JSON.parse(localStorage.getItem('attendanceRecord')) || {};
+        profileDiv.innerHTML = '';
+        for (const student in attendanceRecord) {
+            const records = attendanceRecord[student];
+            const attendanceInfo = records.map(record => `${record.date}: ${record.isPresent ? 'Present' : 'Absent'}`).join('<br>');
+            profileDiv.innerHTML += `<p><strong>${student}:</strong><br>${attendanceInfo}</p>`;
+        }
+    }
+
+    window.onload = loadStudents;
+</script>
+
+</body>
+</html>
