@@ -5,12 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Attendance and Feedback</title>
     <style>
+          header{
+            
+            background-color: #3a81fa;
+           text-decoration-color: #fff; color:yellow;
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+        }
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #55e0db;
+            color: #050217;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
         h1 {
             text-align: center;
@@ -87,6 +95,7 @@
     </style>
 </head>
 <body>
+    <header><h1><b>Welcome  to  Attendance Book</b> </h1></header>
 
 <div class="container">
     <h1>Student Attendance and Feedback</h1>
@@ -110,7 +119,7 @@
 </div>
 
 <script>
-    const students = ["Alice", "Bob", "Charlie", "Diana"];
+    const students = ["Vikash yadav", "Prince yadav", "Ashish Pathak", "Ekram Zafar"];
 
     function loadStudents() {
         const attendanceDiv = document.getElementById('attendance');
@@ -120,8 +129,8 @@
             studentDiv.innerHTML = `
                 <span>${student}</span>
                 <div class="buttons">
-                    <button class="yes" onclick="markAttendance('${student}', true)">Yes</button>
-                    <button class="no" onclick="markAttendance('${student}', false)">No</button>
+                    <button class="yes" onclick="markAttendance('${student}', true)">P</button>
+                    <button class="no" onclick="markAttendance('${student}', false)">A</button>
                 </div>
             `;
             attendanceDiv.appendChild(studentDiv);
